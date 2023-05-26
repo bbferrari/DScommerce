@@ -31,8 +31,7 @@ public class User {
 	public User() {
 	}
 
-	public User(long id, String name, String email, String phone, LocalDate birthDate, String password) {
-		super();
+	public User(Long id, String name, String email, String phone, LocalDate birthDate, String password) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -41,7 +40,7 @@ public class User {
 		this.password = password;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
