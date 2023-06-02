@@ -18,6 +18,7 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	
+	// buscar produto banco de dados
 	@Transactional(readOnly = true)
 	public ProductDTO findById(Long id) {
 		Optional<Product> result = repository.findById(id);
@@ -26,6 +27,7 @@ public class ProductService {
 		return dto;
 	}
 	
+	// listar produto
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAll(Pageable pageable) {
 		Page<Product> result = repository.findAll(pageable);
@@ -33,18 +35,30 @@ public class ProductService {
 		
 	}
 	
+	// adicionar produto
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
-		
 		Product entity = new Product();
+		copyDtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new ProductDTO(entity);
+	}
+	
+	// atualizar produto por ID
+	@Transactional
+	public ProductDTO update(Long id, ProductDTO dto) {
+		Product entity = repository.getReferenceById(id);
+		copyDtoToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new ProductDTO(entity);
+	}
+
+	private void copyDtoToEntity(ProductDTO dto, Product entity) {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setPrice(dto.getPrice());
 		entity.setImgUrl(dto.getImgUrl());
-		
-		entity = repository.save(entity);
-		
-		return new ProductDTO(entity);
+	
 	}
 
 }
